@@ -49,8 +49,8 @@ public class SkystoneDetectorExample extends LinearOpMode {
          * of a frame from the camera. Note that switching pipelines on-the-fly
          * (while a streaming session is in flight) *IS* supported.
          */
-        skyStoneDetector = new SkystoneDetector();
-        phoneCam.setPipeline(skyStoneDetector);
+        NaiveRectangleSamplingSkystoneDetectionPipeline pipeline = new NaiveRectangleSamplingSkystoneDetectionPipeline();
+        phoneCam.setPipeline(pipeline);
 
         /*
          * Tell the camera to start streaming images to us! Note that you must make sure
@@ -63,7 +63,7 @@ public class SkystoneDetectorExample extends LinearOpMode {
          * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
          * away from the user.
          */
-        phoneCam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+        phoneCam.startStreaming(pipeline.getWidth(), pipeline.getHeight(), OpenCvCameraRotation.UPRIGHT);
 
         /*
          * Wait for the user to press start on the Driver Station
@@ -75,15 +75,15 @@ public class SkystoneDetectorExample extends LinearOpMode {
             /*
              * Send some stats to the telemetry
              */
-            telemetry.addData("Stone Position X", skyStoneDetector.getScreenPosition().x);
-            telemetry.addData("Stone Position Y", skyStoneDetector.getScreenPosition().y);
+            telemetry.addData("Skystone", pipeline.getDetectedSkystonePosition());
+            telemetry.addData("Skystone Positions",
+                    pipeline.getSkystonePositions(3)[0] + "" + pipeline.getSkystonePositions(3)[1]);
             telemetry.addData("Frame Count", phoneCam.getFrameCount());
-            telemetry.addData("FPS", String.format(Locale.US, "%.2f", phoneCam.getFps()));
+            telemetry.addData("FPS", String.format("%.2f", phoneCam.getFps()));
             telemetry.addData("Total frame time ms", phoneCam.getTotalFrameTimeMs());
             telemetry.addData("Pipeline time ms", phoneCam.getPipelineTimeMs());
             telemetry.addData("Overhead time ms", phoneCam.getOverheadTimeMs());
             telemetry.addData("Theoretical max FPS", phoneCam.getCurrentPipelineMaxFps());
-            telemetry.update();
 
             /*
              * NOTE: stopping the stream from the camera early (before the end of the OpMode
