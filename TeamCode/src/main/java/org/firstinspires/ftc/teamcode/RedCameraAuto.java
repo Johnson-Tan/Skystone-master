@@ -4,7 +4,6 @@ package org.firstinspires.ftc.teamcode;
 import com.disnodeteam.dogecv.detectors.skystone.SkystoneDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -13,9 +12,9 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 import java.util.Locale;
 
 @Autonomous(group="DogeCV")
-public class CameraAuto extends LinearOpMode {
-    private OpenCvCamera phoneCam;
-    private SkystoneDetector skyStoneDetector;
+public class RedCameraAuto extends LinearOpMode {
+    OpenCvCamera phoneCam;
+    ActualPipeline visionPipeLine;
     Robot robot = new Robot();
 
 
@@ -27,8 +26,9 @@ public class CameraAuto extends LinearOpMode {
 
         phoneCam.openCameraDevice();
 
-        skyStoneDetector = new SkystoneDetector();
-        phoneCam.setPipeline(skyStoneDetector);
+        visionPipeLine = new ActualPipeline();
+
+        phoneCam.setPipeline(visionPipeLine);
 
         phoneCam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 
@@ -36,42 +36,52 @@ public class CameraAuto extends LinearOpMode {
         robot.hardwareMap(hardwareMap);
 
         while (opModeIsActive()) {
+            robot.forward(-0.25, 650);
+            robot.forward(0,100);
 
-
-            telemetry.addData("Stone Position X", skyStoneDetector.getScreenPosition().x);
-            telemetry.addData("Stone Position Y", skyStoneDetector.getScreenPosition().y);
-            telemetry.addData("Frame Count", phoneCam.getFrameCount());
-            telemetry.addData("FPS", String.format(Locale.US, "%.2f", phoneCam.getFps()));
-            telemetry.addData("Total frame time ms", phoneCam.getTotalFrameTimeMs());
-            telemetry.addData("Pipeline time ms", phoneCam.getPipelineTimeMs());
-            telemetry.addData("Overhead time ms", phoneCam.getOverheadTimeMs());
-            telemetry.addData("Theoretical max FPS", phoneCam.getCurrentPipelineMaxFps());
+            telemetry.addData("Position", visionPipeLine.getSkystonePosition());
             telemetry.update();
-
-            if (skyStoneDetector.getScreenPosition().x > 160) {
-                robot.forward(-0.5, 669);
-                robot.forward(-0.5, 320);
-                robot.strafe(-0.5,1565);
+            sleep(1000);
+            if (visionPipeLine.getSkystonePosition() == ActualPipeline.SkystonePosition.LEFT_STONE) {
+               phoneCam.stopStreaming();
+                robot.forward(-0.5, 689);
+                robot.strafe(-0.5,1875);
                 robot.Intake(-0.70,450);
-                robot.forward(0.5,669);
+                robot.forward(0.5,600);
                 robot.forward(0,100);
                 robot.Intake(0,100);
                 robot.strafe(0.5,700);
-                robot.forward(0.5,1000);
-                robot.forward(-0.5,500);
+                robot.forward(0.5,1800);
+                robot.Intake(0.5, 500);
+                robot.Intake(0, 100);
+                robot.forward(-0.5,550);
+                stop();
 
             }
-            else if (skyStoneDetector.getScreenPosition().x < 140 ) {
-                robot.forward(-0.5, 320);
-                robot.strafe(-0.5,1565);
+            else if (visionPipeLine.getSkystonePosition() == ActualPipeline.SkystonePosition.RIGHT_STONE) {
+                phoneCam.stopStreaming();
+                robot.forward(-0.5, 100);
+                robot.strafe(-0.5,1830);
                 robot.Intake(-0.70,450);
                 robot.forward(0.5,669);
                 robot.forward(0,100);
                 robot.Intake(0,100);
                 robot.strafe(0.5,700);
-                robot.forward(0.5,1000);
+                robot.forward(0.5,1169);
                 robot.Intake(0.5,500);
                 robot.forward(-0.5,500);
+                stop();
+                /*
+                robot.strafe(-0.5,700);
+                robot.Intake(-0.70,450);
+                robot.forward(0.5,669);
+                robot.forward(0,100);
+                robot.Intake(0,100);
+                robot.strafe(0.5,700);
+                robot.forward(0.5,1169);
+                robot.Intake(0.5,500);
+                robot.forward(-0.5,500);*/
+
 
                 /*robot.strafe(-0.5, 550);
                 robot.TurnLeft(0.5, 900);
@@ -96,22 +106,23 @@ public class CameraAuto extends LinearOpMode {
                 robot.virtualFourBar.toggleGripper();
             */
                 }
-            else {
-                robot.forward(-0.5, 800);
-                robot.forward(-0.5, 320);
-                robot.strafe(-0.5,1565);
+            else if (visionPipeLine.getSkystonePosition() == ActualPipeline.SkystonePosition.CENTER_STONE) {
+                phoneCam.stopStreaming();
+                robot.forward(-0.5, 369);
+                robot.strafe(-0.5,1850);
                 robot.Intake(-0.70,450);
                 robot.forward(0.5,669);
                 robot.forward(0,100);
                 robot.Intake(0,100);
-                robot.strafe(0.5,700);
-                robot.forward(0.5,1000);
+                robot.strafe(0.5,750);
+                robot.forward(0.5,1500);
                 robot.Intake(0.5,500);
                 robot.forward(-0.5,500);
 
+                stop();
+
 
             }
-            robot.forward(0,1000);
         }
     }
 }
