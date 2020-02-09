@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import com.disnodeteam.dogecv.detectors.skystone.SkystoneDetector;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
@@ -22,7 +23,7 @@ public class RedCameraAuto extends LinearOpMode {
     public void runOpMode() {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
 
         phoneCam.openCameraDevice();
 
@@ -36,6 +37,7 @@ public class RedCameraAuto extends LinearOpMode {
         robot.hardwareMap(hardwareMap);
 
         while (opModeIsActive()) {
+
             robot.forward(-0.25, 650);
             robot.forward(0,100);
 
@@ -45,31 +47,31 @@ public class RedCameraAuto extends LinearOpMode {
             if (visionPipeLine.getSkystonePosition() == ActualPipeline.SkystonePosition.LEFT_STONE) {
                phoneCam.stopStreaming();
                 robot.forward(-0.5, 689);
-                robot.strafe(-0.5,1875);
+                robot.strafe(-0.5,1650);
                 robot.Intake(-0.70,450);
                 robot.forward(0.5,600);
                 robot.forward(0,100);
                 robot.Intake(0,100);
                 robot.strafe(0.5,700);
-                robot.forward(0.5,1800);
+                robot.forward(0.5,1400);
                 robot.Intake(0.5, 500);
                 robot.Intake(0, 100);
-                robot.forward(-0.5,550);
+                robot.forward(-0.5,300);
                 stop();
 
             }
             else if (visionPipeLine.getSkystonePosition() == ActualPipeline.SkystonePosition.RIGHT_STONE) {
                 phoneCam.stopStreaming();
-                robot.forward(-0.5, 100);
-                robot.strafe(-0.5,1830);
+                //robot.forward(-0.5, 100);
+                robot.strafe(-0.5,1650);
                 robot.Intake(-0.70,450);
                 robot.forward(0.5,669);
                 robot.forward(0,100);
                 robot.Intake(0,100);
                 robot.strafe(0.5,700);
-                robot.forward(0.5,1169);
+                robot.forward(0.5,1100);
                 robot.Intake(0.5,500);
-                robot.forward(-0.5,500);
+                robot.forward(-0.5,510);
                 stop();
                 /*
                 robot.strafe(-0.5,700);
@@ -108,16 +110,16 @@ public class RedCameraAuto extends LinearOpMode {
                 }
             else if (visionPipeLine.getSkystonePosition() == ActualPipeline.SkystonePosition.CENTER_STONE) {
                 phoneCam.stopStreaming();
-                robot.forward(-0.5, 369);
-                robot.strafe(-0.5,1850);
+                robot.forward(-0.5, 350);
+                robot.strafe(-0.5,1700);
                 robot.Intake(-0.70,450);
-                robot.forward(0.5,669);
+                robot.forward(0.5,500);
                 robot.forward(0,100);
                 robot.Intake(0,100);
                 robot.strafe(0.5,750);
-                robot.forward(0.5,1500);
+                robot.forward(0.5,1300);
                 robot.Intake(0.5,500);
-                robot.forward(-0.5,500);
+                robot.forward(-0.5,525);
 
                 stop();
 

@@ -182,7 +182,7 @@ public class Robot {
         linearOpMode.sleep(milliseconds);
     }
 
-    public void TurnRight (double Power, int milliseconds) {
+    public void TurnLeft (double Power, int milliseconds) {
         frontLeft.setPower(-Power);
         frontRight.setPower(Power);
         backLeft.setPower(-Power);
@@ -191,7 +191,7 @@ public class Robot {
         linearOpMode.sleep(milliseconds);
     }
 
-    public void TurnLeft (double Power, int milliseconds) {
+    public void TurnRight (double Power, int milliseconds) {
         frontLeft.setPower(Power);
         frontRight.setPower(-Power);
         backLeft.setPower(Power);

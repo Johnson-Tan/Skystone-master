@@ -15,7 +15,7 @@ public class Toasty_Auto_Forward extends LinearOpMode {
         //robot.hardwareMap(hardwareMap);
         robot.init(hardwareMap);
         robot.Forward(0.25);
-        sleep(700);
+        sleep(1200);
 
     }
 }

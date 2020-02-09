@@ -73,12 +73,12 @@ public class ToasterOvenTeleOp extends OpMode {
             robot.backRight.setPower((y - x + z) / m);
         }
 
-        if (gamepad2.right_bumper){
+        if (gamepad2.right_bumper){ //intake
             robot.intakeL.setPower(0.75);
             robot.intakeR.setPower(0.75);
-        }else if (gamepad2.left_bumper){
-            robot.intakeL.setPower(-0.75);
-            robot.intakeR.setPower(-0.75);
+        }else if (gamepad2.left_bumper){ //outtake
+            robot.intakeL.setPower(-0.5);
+            robot.intakeR.setPower(-0.5);
         }else {
             robot.intakeL.setPower(0);
             robot.intakeR.setPower(0);
