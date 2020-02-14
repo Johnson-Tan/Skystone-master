@@ -46,17 +46,29 @@ public class RedCameraAuto extends LinearOpMode {
             sleep(1000);
             if (visionPipeLine.getSkystonePosition() == ActualPipeline.SkystonePosition.LEFT_STONE) {
                phoneCam.stopStreaming();
-                robot.forward(-0.5, 689);
+                robot.forward(-0.5, 469);
                 robot.strafe(-0.5,1650);
                 robot.Intake(-0.70,450);
-                robot.forward(0.5,600);
+                robot.forward(0.5,369);
                 robot.forward(0,100);
                 robot.Intake(0,100);
-                robot.strafe(0.5,700);
-                robot.forward(0.5,1400);
+                robot.strafe(0.5,800);
+                robot.forward(0.5,1500);
                 robot.Intake(0.5, 500);
                 robot.Intake(0, 100);
-                robot.forward(-0.5,300);
+                robot.forward(-0.5,1700);
+
+                robot.strafe(-0.5,600);
+                robot.Intake(-0.70,450);
+                robot.forward(0.5,360);
+                robot.forward(0,100);
+                robot.Intake(0,100);
+                robot.strafe(0.5,800);
+                robot.forward(0.5,1200);
+                robot.Intake(0.5, 500);
+                robot.Intake(0, 100);
+                robot.forward(-0.5,500);
+
                 stop();
 
             }
@@ -69,7 +81,7 @@ public class RedCameraAuto extends LinearOpMode {
                 robot.forward(0,100);
                 robot.Intake(0,100);
                 robot.strafe(0.5,700);
-                robot.forward(0.5,1100);
+                robot.forward(0.5,1500);
                 robot.Intake(0.5,500);
                 robot.forward(-0.5,510);
                 stop();
@@ -110,7 +122,7 @@ public class RedCameraAuto extends LinearOpMode {
                 }
             else if (visionPipeLine.getSkystonePosition() == ActualPipeline.SkystonePosition.CENTER_STONE) {
                 phoneCam.stopStreaming();
-                robot.forward(-0.5, 350);
+                robot.forward(-0.5, 250);
                 robot.strafe(-0.5,1700);
                 robot.Intake(-0.70,450);
                 robot.forward(0.5,500);

@@ -2,10 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -13,13 +13,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Robot {
 
 
-    DcMotor frontLeft;
-    DcMotor backLeft;
-    DcMotor frontRight;
-    DcMotor backRight;
+    DcMotorEx frontLeft;
+    DcMotorEx backLeft;
+    DcMotorEx frontRight;
+    DcMotorEx backRight;
 
-    DcMotor left;
-    DcMotor right;
+    DcMotorEx left;
+    DcMotorEx right;
 
     CRServo srvLeft;
     CRServo srvRight;
@@ -35,8 +35,8 @@ public class Robot {
         }
     };
 
-    DcMotor intakeL;
-    DcMotor intakeR;
+    DcMotorEx intakeL;
+    DcMotorEx intakeR;
 
     Servo grabberL;
     Servo grabberR;
@@ -57,18 +57,18 @@ public class Robot {
         srvRight = hardwareMap.get(CRServo.class,"vFourBarR");
         srvRight.setDirection(CRServo.Direction.REVERSE);
 
-        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        backRight = hardwareMap.get(DcMotor.class, "backRight");
+        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
+        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
+        backRight = hardwareMap.get(DcMotorEx.class, "backRight");
 
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontLeft.setDirection(DcMotorEx.Direction.REVERSE);
+        backLeft.setDirection(DcMotorEx.Direction.REVERSE);
 
-        intakeL = hardwareMap.get(DcMotor.class, "intakeL");
-        intakeR = hardwareMap.get(DcMotor.class, "intakeR");
+        intakeL = hardwareMap.get(DcMotorEx.class, "intakeL");
+        intakeR = hardwareMap.get(DcMotorEx.class, "intakeR");
 
-        intakeL.setDirection(DcMotor.Direction.REVERSE);
+        intakeL.setDirection(DcMotorEx.Direction.REVERSE);
 
 
         grabberL = hardwareMap.get(Servo.class, "grabberL");
@@ -78,8 +78,8 @@ public class Robot {
 
         gripper = hardwareMap.get(Servo.class,"gripper");
 
-        left = hardwareMap.get(DcMotor.class, "left");
-        right = hardwareMap.get(DcMotor.class, "right");
+        left = hardwareMap.get(DcMotorEx.class, "left");
+        right = hardwareMap.get(DcMotorEx.class, "right");
 
         double dbPos = 0;
 
@@ -113,20 +113,20 @@ public class Robot {
     }
 
     public void encodersForward(double inches, double power){
-        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
         frontLeft.setTargetPosition(inchesToTick(inches));
         frontRight.setTargetPosition(inchesToTick(inches));
         backLeft.setTargetPosition(inchesToTick(inches));
         backRight.setTargetPosition(inchesToTick(inches));
 
-        frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontLeft.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        frontRight.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        backLeft.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        backRight.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
         Forward(power);
 
