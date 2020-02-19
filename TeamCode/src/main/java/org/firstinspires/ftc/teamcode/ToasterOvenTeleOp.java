@@ -85,8 +85,10 @@ public class ToasterOvenTeleOp extends OpMode {
         }
 
         if (gamepad1.left_bumper) {
-            robot.grabberL.setPosition(0);
-            robot.grabberR.setPosition(0);
+            while (robot.grabberL.getPosition() != 0) {
+                robot.grabberL.setPosition(0);
+                robot.grabberR.setPosition(0);
+            }
         } else if (gamepad1.right_bumper) {
             robot.grabberL.setPosition(1);
             robot.grabberR.setPosition(1);

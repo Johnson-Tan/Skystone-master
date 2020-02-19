@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -26,12 +26,11 @@ public class Robot {
     Servo gripper;
     private boolean srvLeftReversed = false;
     private boolean srvRightReversed = true;
-
+    
 
     LinearOpMode linearOpMode = new LinearOpMode() {
         @Override
         public void runOpMode() throws InterruptedException {
-
         }
     };
 
@@ -96,12 +95,15 @@ public class Robot {
     }
 
     public void openGripper(){
-        gripper.setPosition(0);
+        while (gripper.getPosition() != 0) {
+            gripper.setPosition(0);
+        }
     }
 
     public void closeGripper(){
-
-        gripper.setPosition(1);
+        while (gripper.getPosition() != 1) {
+            gripper.setPosition(1);
+        }
     }
 
     public void toggleGripper(){
@@ -112,30 +114,6 @@ public class Robot {
         }
     }
 
-    public void encodersForward(double inches, double power){
-        frontLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        frontRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        backLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        backRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-
-        frontLeft.setTargetPosition(inchesToTick(inches));
-        frontRight.setTargetPosition(inchesToTick(inches));
-        backLeft.setTargetPosition(inchesToTick(inches));
-        backRight.setTargetPosition(inchesToTick(inches));
-
-        frontLeft.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        frontRight.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        backLeft.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-        backRight.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-
-        Forward(power);
-
-        while (frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy()){
-        }
-
-        Stop();
-
-    }
 
     public void Forward (double Power){
         frontLeft.setPower(Power);
@@ -208,7 +186,6 @@ public class Robot {
 
     public void rotatein (double Power, int milliseconds) {
         rotate(-Power);
-
         linearOpMode.sleep(milliseconds);
     }
 
@@ -248,6 +225,55 @@ public class Robot {
     public double getGrabber() {
         return dbPos;
     }
+
+    public void PIDmovement(double targetPosition, DcMotorEx motor){
+        motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        double currentPosition = motor.getCurrentPosition();
+        double error = targetPosition - currentPosition;
+        double newError;
+        double newInteg;
+        double deriv = 0;
+        double integ = 0;
+
+        double pow;
+
+
+        double pGain = 0.002;
+        double dGain = 0.01;
+        double iGain = 0;
+
+        while (Math.abs(error) > 10 && Math.abs(deriv) > 10){
+            // we start off with powering the robot based on initial error
+            pow = pGain * error - dGain * deriv + iGain * integ;
+            forward(pow,1);
+
+            // we get the new error after moving
+            newError = targetPosition - motor.getCurrentPosition();
+
+            // we get the change in error to see how fast the robot is changing in movement
+            deriv = error - newError;
+
+            //we replace the old error with the new error
+            error = newError;
+
+            //we get the change in x
+            newInteg = error - newError + integ;
+            integ = newInteg;
+        }
+
+        Stop();
+
+    }
+
+    public void PIDForward(double inches){
+        double targetPosition = inchesToTick(inches);
+        PIDmovement(targetPosition, frontLeft);
+        PIDmovement(targetPosition, frontRight);
+        PIDmovement(targetPosition, backLeft);
+        PIDmovement(targetPosition, backRight);
+    }
+
 
     /*
     public void Lift (double Power, int milliseconds){
