@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -24,9 +25,14 @@ public class Robot {
     CRServo srvLeft;
     CRServo srvRight;
     Servo gripper;
-    private boolean srvLeftReversed = false;
-    private boolean srvRightReversed = true;
-    
+
+    public static double p = 25;
+    public static double i = 0;
+    public static double d = 0;
+    public static double f = 0;
+    public static double frontleftActual, frontRightActual, backLeftActual, backRightActual, Desired;
+
+
 
     LinearOpMode linearOpMode = new LinearOpMode() {
         @Override
@@ -41,8 +47,6 @@ public class Robot {
     Servo grabberR;
 
     double dbPos = 0;
-
-    boolean fastMode = true;
 
 
 
@@ -70,6 +74,7 @@ public class Robot {
         intakeL.setDirection(DcMotorEx.Direction.REVERSE);
 
 
+
         grabberL = hardwareMap.get(Servo.class, "grabberL");
         grabberR = hardwareMap.get(Servo.class, "grabberR");
         grabberL.setPosition(1-dbPos);
@@ -77,16 +82,15 @@ public class Robot {
 
         gripper = hardwareMap.get(Servo.class,"gripper");
 
-        left = hardwareMap.get(DcMotorEx.class, "left");
-        right = hardwareMap.get(DcMotorEx.class, "right");
+        left = hardwareMap.get(DcMotorEx.class, "elevatorLeft");
+        right = hardwareMap.get(DcMotorEx.class, "elevatorRight");
+
+        right.setDirection(DcMotorEx.Direction.REVERSE);
+        left.setDirection(DcMotorEx.Direction.REVERSE);
 
         double dbPos = 0;
+        gripper.setPosition(1);
 
-    }
-
-    public void motorsPower(double power){
-        frontLeft.setPower(power);
-        backLeft.setPower(power);
     }
 
     public void rotate(double power){
@@ -109,8 +113,10 @@ public class Robot {
     public void toggleGripper(){
         if (gripper.getPosition() == 1) {
             openGripper();
+            linearOpMode.sleep(100);
         } else {
             closeGripper();
+            linearOpMode.sleep(100);
         }
     }
 
@@ -200,6 +206,33 @@ public class Robot {
         intakeR.setPower(0);
     }
 
+    public void robotvelocity (int inches) {
+        frontLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        frontRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        backRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        backLeft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
+        frontLeft.setVelocityPIDFCoefficients(p,i,d,f);
+        frontRight.setVelocityPIDFCoefficients(p,i,d,f);
+        backLeft.setVelocityPIDFCoefficients(p,i,d,f);
+        backRight.setVelocityPIDFCoefficients(p,i,d,f);
+
+        frontLeft.setTargetPosition(inchesToTick(inches));
+        frontRight.setTargetPosition(inchesToTick(inches));
+        backLeft.setTargetPosition(inchesToTick(inches));
+        backRight.setTargetPosition(inchesToTick(inches));
+
+        frontLeft.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        frontRight.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        backLeft.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        backRight.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+
+    }
 
     public int inchesToTick (double inches){
         double circumference = Math.PI*3.937;
@@ -228,7 +261,7 @@ public class Robot {
 
     public void PIDmovement(double targetPosition, DcMotorEx motor){
         motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         double currentPosition = motor.getCurrentPosition();
         double error = targetPosition - currentPosition;
         double newError;
@@ -246,7 +279,8 @@ public class Robot {
         while (Math.abs(error) > 10 && Math.abs(deriv) > 10){
             // we start off with powering the robot based on initial error
             pow = pGain * error - dGain * deriv + iGain * integ;
-            forward(pow,1);
+            motor.setPower(pow);
+            linearOpMode.sleep(10);
 
             // we get the new error after moving
             newError = targetPosition - motor.getCurrentPosition();

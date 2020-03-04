@@ -47,17 +47,17 @@ public class RedCameraAuto extends LinearOpMode {
             if (visionPipeLine.getSkystonePosition() == ActualPipeline.SkystonePosition.LEFT_STONE) {
                phoneCam.stopStreaming();
                 robot.forward(-0.5, 469);
-                robot.strafe(-0.5,1650);
-                robot.Intake(-0.70,450);
+                robot.strafe(-0.5,1575);
+                robot.Intake(-0.60,425);
                 robot.forward(0.5,369);
                 robot.forward(0,100);
                 robot.Intake(0,100);
-                robot.strafe(0.5,800);
-                robot.forward(0.5,1500);
-                robot.Intake(0.5, 500);
+                robot.strafe(0.5,815);
+                robot.forward(0.5,1425);
+                robot.Intake(0.4, 550);
                 robot.Intake(0, 100);
-                robot.forward(-0.5,1700);
-
+                robot.forward(-0.5,500);
+/*
                 robot.strafe(-0.5,600);
                 robot.Intake(-0.70,450);
                 robot.forward(0.5,360);
@@ -68,21 +68,21 @@ public class RedCameraAuto extends LinearOpMode {
                 robot.Intake(0.5, 500);
                 robot.Intake(0, 100);
                 robot.forward(-0.5,500);
-
+*/
                 stop();
 
             }
             else if (visionPipeLine.getSkystonePosition() == ActualPipeline.SkystonePosition.RIGHT_STONE) {
                 phoneCam.stopStreaming();
                 //robot.forward(-0.5, 100);
-                robot.strafe(-0.5,1650);
-                robot.Intake(-0.70,450);
+                robot.strafe(-0.5,1580);
+                robot.Intake(-0.60,425);
                 robot.forward(0.5,669);
                 robot.forward(0,100);
                 robot.Intake(0,100);
                 robot.strafe(0.5,700);
                 robot.forward(0.5,1500);
-                robot.Intake(0.5,500);
+                robot.Intake(0.4,550);
                 robot.forward(-0.5,510);
                 stop();
                 /*
@@ -124,14 +124,14 @@ public class RedCameraAuto extends LinearOpMode {
                 phoneCam.stopStreaming();
                 robot.forward(-0.5, 250);
                 robot.strafe(-0.5,1700);
-                robot.Intake(-0.70,450);
+                robot.Intake(-0.60,425);
                 robot.forward(0.5,500);
                 robot.forward(0,100);
                 robot.Intake(0,100);
                 robot.strafe(0.5,750);
-                robot.forward(0.5,1300);
-                robot.Intake(0.5,500);
-                robot.forward(-0.5,525);
+                robot.forward(0.5,1500);
+                robot.Intake(0.4,550);
+                robot.forward(-0.5,475);
 
                 stop();
 

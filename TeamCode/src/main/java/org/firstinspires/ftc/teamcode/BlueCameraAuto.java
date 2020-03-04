@@ -55,7 +55,7 @@ public class BlueCameraAuto extends LinearOpMode {
                 robot.Intake(0,100);
                 robot.strafe(-0.45, 1050);
                 robot.forward(0.45,900);
-                robot.Intake(0.45, 500);
+                robot.Intake(0.4, 550);
                 robot.Intake(0, 100);
                 robot.forward(-0.45,600);
                 stop();
@@ -85,7 +85,7 @@ public class BlueCameraAuto extends LinearOpMode {
                 robot.strafe(0.45,800);
                 robot.forward(-0.45,1800);
                 robot.TurnLeft(0.45,600);
-                robot.Intake(0.45, 500);
+                robot.Intake(0.40, 550);
                 robot.Intake(0, 100);
                 robot.TurnRight(0.45,1125);
                 robot.forward(0.45,500);
@@ -103,7 +103,7 @@ public class BlueCameraAuto extends LinearOpMode {
                 robot.strafe(0.45,750);
                 robot.forward(-0.45,1500);
                 robot.TurnLeft(0.45,600);
-                robot.Intake(0.45, 500);
+                robot.Intake(0.4, 550);
                 robot.Intake(0, 100);
                 robot.TurnRight(0.45,1125);
                 robot.forward(0.45,350);

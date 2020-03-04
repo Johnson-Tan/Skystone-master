@@ -9,11 +9,17 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@TeleOp(name= "GhostToast")
+@TeleOp(name= "PID_Tele")
 @Config
-public class ToasterOvenTeleOp extends OpMode {
+public class PID_Tele extends OpMode {
 
     Robot robot = new Robot();
+
+    public static double p = 1;
+    public static double i = 0;
+    public static double d = 0;
+    public static double f = 0;
+    public static double leftActual, rightActual, Desired;
 
     @Override
     public void init() {
@@ -33,14 +39,19 @@ public class ToasterOvenTeleOp extends OpMode {
 
         robot.left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         robot.right.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        robot.right.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        robot.right.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-
-
+        robot.left.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        robot.right.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
     }
 
     @Override
     public void loop() {
+
+        robot.left.setVelocityPIDFCoefficients(p,i,d,f);
+        robot.right.setVelocityPIDFCoefficients(p,i,d,f);
+        leftActual = robot.left.getVelocity();
+        rightActual = robot.right.getVelocity();
+        Desired = gamepad2.left_trigger - gamepad2.right_trigger;
+
 
         telemetry.addData("left position",robot.left.getCurrentPosition());
         telemetry.addData("right position",robot.right.getCurrentPosition());
@@ -57,25 +68,14 @@ public class ToasterOvenTeleOp extends OpMode {
         double x = gamepad1.left_stick_x;
         double z = gamepad1.right_stick_x;
         double m; // modifier
-        boolean fastTriggered = false;
-        boolean slowTriggered = false;
 
-        if(gamepad1.a){
-
+        if (gamepad1.a) {
             m = 3;
-
-        } else if (gamepad1.y){
-
+        } else if (gamepad1.y) {
             m = 1;
-
-        }
-
-        else{
-
+        } else {
             m = 4/3;
-
         }
-
 
         if (y > 0 && -0.3 < x && x < 0.3) { // forward region
             robot.frontLeft.setPower((y - z) / m);
@@ -136,14 +136,12 @@ public class ToasterOvenTeleOp extends OpMode {
 
         if (gamepad2.right_trigger > 0.05 || gamepad2.left_trigger > 0.05) {
 
+            robot.left.setVelocity((gamepad2.left_trigger - gamepad2.right_trigger)*600);
+            robot.right.setVelocity((gamepad2.left_trigger - gamepad2.right_trigger)*600);
 
-            if (robot.left.getCurrentPosition() < 2000 || robot.right.getCurrentPosition() < 2000) {
-                robot.left.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-                robot.right.setPower(gamepad2.left_trigger - gamepad2.right_trigger);
-            }else {
-                robot.left.setPower(0);
-                robot.right.setPower(0);
-            }
+        } else {
+            robot.left.setPower(0);
+            robot.right.setPower(0);
 
         }
 
@@ -157,7 +155,7 @@ public class ToasterOvenTeleOp extends OpMode {
 
         if (gamepad2.y) {
             robot.toggleGripper();
-            robot.linearOpMode.sleep(250);
+
         }
 
     }

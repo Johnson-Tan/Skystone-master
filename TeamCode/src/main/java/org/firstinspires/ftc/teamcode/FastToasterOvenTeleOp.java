@@ -9,9 +9,9 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@TeleOp(name= "GhostToast")
+@TeleOp(name= "HypeToast")
 @Config
-public class ToasterOvenTeleOp extends OpMode {
+public class FastToasterOvenTeleOp extends OpMode {
 
     Robot robot = new Robot();
 
@@ -36,6 +36,7 @@ public class ToasterOvenTeleOp extends OpMode {
         robot.right.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         robot.right.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
+        robot.gripper.setPosition(1);
 
     }
 
@@ -66,13 +67,13 @@ public class ToasterOvenTeleOp extends OpMode {
 
         } else if (gamepad1.y){
 
-            m = 1;
+            m = 4/3;
 
         }
 
         else{
 
-            m = 4/3;
+            m = 1;
 
         }
 

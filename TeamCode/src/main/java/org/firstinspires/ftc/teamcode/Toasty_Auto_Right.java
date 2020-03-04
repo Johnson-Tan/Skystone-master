@@ -14,11 +14,9 @@ public class Toasty_Auto_Right extends LinearOpMode {
         waitForStart();
         robot.init(hardwareMap);
         robot.strafe(0.5,700);
-        sleep(700);
         robot.Stop();
         sleep(300);
-        robot.Forward(-0.5);
-        sleep(500);
+        robot.forward(-0.5, 500);
 
     }
 }
